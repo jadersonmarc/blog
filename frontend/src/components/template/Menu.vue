@@ -1,55 +1,43 @@
 <template>
-   <b-form-select class="menu"  :options="categories" v-model="category.name"></b-form-select>
+    <aside class="menu" v-show="isMenuVisible">
+        <div class="menu-filter">
+            <i class="fa fa-search fa-lg"></i>
+            <input type="text" placeholder="Digite para filtrar..."
+                v-model="treeFilter" class="filter-field">
+        </div>
+        <Tree :data="treeData" :options="treeOptions"
+            :filter="treeFilter" ref="tree" />
+    </aside>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Tree from 'liquor-tree'
-import { baseApiUrl } from '@/global'
-import axios from 'axios'
+// import { baseApiUrl } from '@/global'
+// import axios from 'axios'
 
 export default {
     name: 'Menu',
     components: { Tree },
-
+    computed: mapState(['isMenuVisible']),
     data: function() {
         return {
-            category: {},
-            categories: [],
-
-        }
-    },
-    methods: {
-        getData() {
-            const url = `${baseApiUrl}/categories`
-                axios.get(url).then(res => {
-                this.categories = res.data.categories.map(category => {
-                    return { ...category, value: category.id, text: category.name }
-                })
-            })
-        },
-        onNodeSelect(category) {
-            if (category.id > 1 ) {
-                this.$router.push({
-                    name: 'articlesByCategory',
-                    params: { id: category.id }
-                })
+            treeFilter: '',
+            treeData: this.getTreeData(),
+            treeOptions: {
+                propertyNames: { 'text': 'name' },
+                filter: { emptyText: 'Categoria não encontrada' }
             }
         }
-    }, watch: {
-        $route() {
-             this.onNodeSelect(this.category)
-        }
     },
-    mounted() {
-        this.getData()
-    }
+
 }
 </script>
 
 <style>
     .menu {
         grid-area: menu;
-        background: linear-gradient(to right, #1e469a, #49a7c1);
+        background: linear-gradient(to right, #232526, #414345);
 
         display: flex;
         flex-direction: column;
@@ -62,6 +50,14 @@ export default {
         text-decoration: none;
     }
 
+    .menu .tree-node.selected > .tree-content,
+    .menu .tree-node .tree-content:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .tree-arrow.has-child {
+        filter: brightness(2);
+    }
 
     .menu .menu-filter {
         display: flex;

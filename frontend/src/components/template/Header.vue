@@ -1,39 +1,45 @@
 <template>
     <header class="header">
-        <a>
-            <Menu id="menu"/>
+        <a class="toggle" @click="toggleMenu" v-if="!hideToggle">
+            <i class="fa fa-lg" :class="icon"></i>
         </a>
-   
+        <h1 class="title">
+            <router-link to="/">{{ title }}</router-link>
+        </h1>
+        <UserDropdown v-if="!hideUserDropdown" />
     </header>
 </template>
 
 <script>
-
-import Menu from "@/components/template/Menu"
+import UserDropdown from './UserDropdown'
 
 export default {
     name: 'Header',
-    components: { Menu },
+    components: { UserDropdown },
     props: {
-        titles: 'profissionais da medicina ',
-        categories: []
+        title: String,
+        hideToggle: Boolean,
+        hideUserDropdown: Boolean
+    },
+    computed: {
+        icon() {
+            return this.$store.state.isMenuVisible ? "fa-angle-left" : "fa-angle-down"
+        }
+    },
+    methods: {
+        toggleMenu() {
+            this.$store.commit('toggleMenu')
+        }
     }
 }
 </script>
 
 <style>
-
-    #menu {
-         width: 180px;
-        height: 100%;
-        justify-self: flex-start;
-        background: linear-gradient(to right, #1e469a, #49a7c1);
-    }
     .header {
         grid-area: header;
         background: linear-gradient(to right, #1e469a, #49a7c1);
 
-        
+        display: flex;
         justify-content: center;
         align-items: center;
     }

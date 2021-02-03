@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-        <span>Copyright <strong>herois do cotidiano</strong> © 2021-2022</span>
+        <span><strong>herois do cotidiano</strong> © 2021-2022</span>
     </footer>
 </template>
 
