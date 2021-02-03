@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::post('login', 'App\Http\Controllers\AuthenticatorContrller@login');
+Route::post('signup', 'App\Http\Controllers\AuthenticatorContrller@signup');
+Route::middleware('auth:api')->group(function() {
+    Route::post('logout', 'App\Http\Controllers\AuthenticatorContrller@logout');
+});
+
 Route::get('articles/{id}', 'App\Http\Controllers\ArticlesController@show');
 Route::get('articles', 'App\Http\Controllers\ArticlesController@index');
 Route::post('articles', 'App\Http\Controllers\ArticlesController@store');
