@@ -35,12 +35,12 @@ class ArticlesController extends Controller
     {
         $dados = [              
 
-            'title' => $request->name,
-            'category' => $request->categoryId,
+            'title' => $request->title,
+            'category' => $request->category,
             'content' => $request->content,
-            'sub_title' => $request->description,
+            'sub_title' => $request->sub_title,
             'imageUrl' => $request->imageUrl,
-            'autor' => $request->userId,
+            'autor' => $request->autor,
 
         ];
         $article = new Article($dados);                          

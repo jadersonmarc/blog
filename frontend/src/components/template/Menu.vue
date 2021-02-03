@@ -13,8 +13,8 @@
 <script>
 import { mapState } from 'vuex'
 import Tree from 'liquor-tree'
-// import { baseApiUrl } from '@/global'
-// import axios from 'axios'
+import { baseApiUrl } from '@/global'
+import axios from 'axios'
 
 export default {
     name: 'Menu',
@@ -30,7 +30,25 @@ export default {
             }
         }
     },
+    methods: {
+        getTreeData() {
+            const url = `${baseApiUrl}/categories`
+            return axios.get(url).then(res => res.data.categories)
+        },
+        onNodeSelect(node) {
+            this.$router.push({
+                name: 'articlesByCategory',
+                params: { id: node.id }
+            })
 
+            if(this.$mq === 'xs' || this.$mq === 'sm') {
+                this.$store.commit('toggleMenu', false)
+            }
+        }
+    },
+    mounted() {
+        this.$refs.tree.$on('node:selected', this.onNodeSelect)
+    }
 }
 </script>
 
