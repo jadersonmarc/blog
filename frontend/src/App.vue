@@ -4,7 +4,7 @@
 			:hideToggle="!user"
 			:hideUserDropdown="!user" />
 		<Menu v-if="user" />
-		<Content v-else />
+		<Content />
 		<Footer />
 	</div>
 </template>
@@ -25,24 +25,21 @@ export default {
 	computed: mapState(['isMenuVisible', 'user']),
 	data: function() {
 		return {
-			validatingToken: true
+			//
 		}
 	},
 	methods: {
 		async validateToken() {
-			this.validatingToken = true
+		
 
 			const json = localStorage.getItem(userKey)
 			const userData = JSON.parse(json)
 			this.$store.commit('setUser', null)
 
-			// if(!userData) {
-			// 	this.$router.push({ name: 'auth' })
-			// 	return
-			// }
-
-			
-
+			if(!userData) {
+				this.$router.push({ name: 'auth' })
+				return
+			}
 
 				this.$store.commit('setUser', userData)
 				

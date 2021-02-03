@@ -66,8 +66,9 @@ export default {
         }
     },
     mounted() {
-        
+        this.category.id = this.$route.params.id
         this.getCategory()
+        this.getArticles()
     }
 }
 </script>
