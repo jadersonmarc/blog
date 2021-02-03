@@ -1,5 +1,5 @@
 <template>
-	<div id="app" :class="{'hide-menu': !isMenuVisible || !user}">
+	<div id="app" >
 		<Header title="Heróis do cotidiano" 
 			:hideToggle="!user"
 			:hideUserDropdown="!user" />
