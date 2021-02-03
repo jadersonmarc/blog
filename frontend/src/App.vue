@@ -1,26 +1,61 @@
 <template>
-	<div id="app">
-<Header />
-<Content />
-<Footer />
+	<div id="app" :class="{'hide-menu': !isMenuVisible || !user}">
+		<Header title="Heróis do cotidiano" 
+			:hideToggle="!user"
+			:hideUserDropdown="!user" />
+		<Menu v-if="user" />
+		<Content v-else />
+		<Footer />
 	</div>
 </template>
 
 <script>
-
-import Footer from "@/components/template/Footer"
-import Content from "@/components/template/Content"
+// import axios from "axios"
+ import {  userKey } from "@/global"
+import { mapState } from "vuex"
 import Header from "@/components/template/Header"
+import Menu from "@/components/template/Menu"
+import Content from "@/components/template/Content"
+import Footer from "@/components/template/Footer"
 
 
 export default {
-  name: 'App',
+	name: "App",
+	components: { Header, Menu, Content, Footer },
+	computed: mapState(['isMenuVisible', 'user']),
+	data: function() {
+		return {
+			validatingToken: true
+		}
+	},
+	methods: {
+		async validateToken() {
+			this.validatingToken = true
 
-  components: {
-    Header, Footer, Content
-  },
+			const json = localStorage.getItem(userKey)
+			const userData = JSON.parse(json)
+			this.$store.commit('setUser', null)
 
-};
+			// if(!userData) {
+			// 	this.$router.push({ name: 'auth' })
+			// 	return
+			// }
+
+			
+
+
+				this.$store.commit('setUser', userData)
+				
+				if(this.$mq === 'xs' || this.$mq === 'sm') {
+					this.$store.commit('toggleMenu', false)
+				}
+	
+		}
+	},
+	created() {
+		this.validateToken()
+	}
+}
 </script>
 
 <style>
@@ -42,8 +77,8 @@ export default {
 		grid-template-columns: 300px 1fr;
 		grid-template-areas:
 			"header header"
-			"content content"
-			"footer footer";
+			"menu content"
+			"menu footer";
 	}
 
 	#app.hide-menu {

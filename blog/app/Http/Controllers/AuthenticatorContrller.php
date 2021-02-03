@@ -41,7 +41,7 @@ class AuthenticatorContrller extends Controller
             ], 401);
         
         $email = $request->email;
-        $user = User::find($email);
+        $user = $request->user();
         $token = $user->createToken('Token de acesso')->accessToken;
 
         return response()->json([
